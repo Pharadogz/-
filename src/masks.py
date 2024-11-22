@@ -1,25 +1,15 @@
-"""Ввод номера карты"""
-greeting_carts = 'Введите номер карты:'
-print(greeting_carts)
+from typing import Any
 
 
-def get_mask_card_number(card, stars=2) -> str:
-    """Маскинг номера"""
-    return (f"{card.replace(' ', '')[:4]} "
-            f"{card.replace(' ', '')[4:6]}{'*' * stars} "
-            f"{card.replace(' ', '')[-4:]}")
+def get_mask_card_number(card_number: Any) -> str:
+    """Принимает на вход номер карты, возвращает маску карты в типе str"""
+    card_number = str(card_number)
+    masked_card_number = card_number[:4] + " " + card_number[4:6] + "** **** " + card_number[-4:]
+    return str(masked_card_number)
 
 
-print(get_mask_card_number("7000792289606361"))
-
-"""Ввод номера счёта"""
-greeting_account = 'Введите номер счёта:'
-print(greeting_account)
-
-
-def get_mask_account_number(card, stars=2) -> str:
-    """Маскинг номера"""
-    return f"{'*' * stars}{card.replace(' ', '')[-4:]}"
-
-
-print(get_mask_account_number("73654108430135874305"))
+def get_mask_account(account_number: Any) -> str:
+    """Принимет номер счета, возвращает маску счета в типе str"""
+    account_number = str(account_number)
+    masked_account = "**" + account_number[-4:]
+    return str(masked_account)
