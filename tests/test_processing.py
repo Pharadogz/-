@@ -47,5 +47,5 @@ def test_sort_by_date_incorrect_formating(test_dict_list_incorrect_date):
 def test_sort_by_date_incorrect_formating_texting(test_dict_list_incorrect_date_second_version):
     with pytest.raises(ValueError):
         sort_by_date(test_dict_list_incorrect_date_second_version) == (
-            "Invalid isoformat string: 'четырнадцатое октября две" "тысячи восемнадцатого года'"
+            "Invalid isoformat string: 'Четырнадцатое октября две" "Тысячи восемнадцатого года'"
         )
