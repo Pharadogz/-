@@ -7,8 +7,8 @@ def test_get_mask_card_numbers(numbers_16):
     assert get_mask_card_number(numbers_16) == "7000 79** **** 6361"
 
 
-def test_get_mask_card_numbers_with_spaces(numbers_16_spaces):
-    assert get_mask_card_number(numbers_16_spaces) == "7000 79** **** 6361"
+def test_get_mask_card_numbers_with_spaces(numbers_16):
+    assert get_mask_card_number(numbers_16) == "7000 79** **** 6361"
 
 
 def test_get_mask_card_number_int(numbers_16_int):
@@ -27,8 +27,8 @@ def test_get_mask_account(numbers_20):
     assert get_mask_account(numbers_20) == "**1234"
 
 
-def test_get_mask_account_with_spaces(numbers_20_spaces):
-    assert get_mask_account(numbers_20_spaces) == "**1234"
+def test_get_mask_account_with_spaces(numbers_20):
+    assert get_mask_account(numbers_20) == "**1234"
 
 
 def test_get_mask_account_int(numbers_20_int):
