@@ -28,10 +28,6 @@ def get_mask_card_number(card_number: Any) -> str:
     raise ValueError("Некорректный номер карты")
 
 
-# client_acc_number = 73654108430135874305
-# client_card_number = 7000792289606361
-# print(get_mask_account(str(client_acc_number)))
-# print(get_mask_card(str(client_card_number)))
 def get_mask_account(account_number: Any) -> str:
     """Принимет номер счета, возвращает маску счета в типе str"""
     account_number = str(account_number)
