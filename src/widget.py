@@ -14,11 +14,14 @@ date = "2024-03-11T02:26:18.671407"
 
 
 def mask_account_card(card_info: str) -> str:
-    """Принимает тип и номер карты/счета, возвращает замаскированный номер карты/счета"""
+    """Принимает тип и номер карты/счета,
+     возвращает замаскированный номер карты/счета"""
     if card_info == "":
         raise ValueError("нет данных")
     card_infolist = card_info.split()
-    if card_infolist[0] == "Счёт" or (card_infolist[0] == card_infolist[-1] and len(card_infolist[0]) == 20):
+    if (card_infolist[0] == "Счёт"
+            or (card_infolist[0] == card_infolist[-1]
+                and len(card_infolist[0]) == 20)):
         if card_infolist[-1] == "Счет":
             raise ValueError("Номер счета не указан")
         returned_number = masks.get_mask_account(card_infolist.pop(-1))
@@ -33,10 +36,14 @@ def mask_account_card(card_info: str) -> str:
 
 
 def get_date(core_date: str) -> str:
-    """Принимает дату и время в формате ISO 8601, возвращает дату в формате ДД.ММ.ГГГГ"""
+    """Принимает дату и время в формате
+     ISO 8601, возвращает дату в формате ДД.ММ.ГГГГ"""
     core_date_list = core_date.split("-")
-    if core_date_list[0].isdigit() and core_date_list[1].isdigit() and core_date_list[2][:2].isdigit and len(
-            core_date_list) == 3:
-        returned_date = core_date_list[2][:2] + "." + core_date_list[1] + "." + core_date_list[0]
+    if (core_date_list[0].isdigit()
+            and core_date_list[1].isdigit()
+            and core_date_list[2][:2].isdigit and len(
+                core_date_list) == 3):
+        returned_date = (core_date_list[2][:2] + "."
+                         + core_date_list[1] + "." + core_date_list[0])
         return returned_date
     raise ValueError("Некорректный формат даты")

@@ -1,3 +1,6 @@
+from typing import Any
+
+
 def get_mask_card(card_number: str) -> str:
     """функция, маскировки номера карты"""
     new_list = list()
@@ -6,9 +9,6 @@ def get_mask_card(card_number: str) -> str:
     new_list.append("****")
     new_list.append(card_number[12:])
     return "".join(new_list)
-
-
-from typing import Any
 
 
 def get_mask_account(acc_number: str) -> str:
@@ -23,7 +23,8 @@ def get_mask_card_number(card_number: Any) -> str:
     card_number = str(card_number)
     card_number = card_number.replace(" ", "")
     if card_number.isdigit() and 12 < len(card_number) < 20:
-        masked_card_number = card_number[:4] + " " + card_number[4:6] + "** **** " + card_number[-4:]
+        masked_card_number = (card_number[:4] + " " + card_number[4:6]
+                              + "** **** " + card_number[-4:])
         return str(masked_card_number)
     raise ValueError("Некорректный номер карты")
 
