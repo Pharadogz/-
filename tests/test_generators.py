@@ -53,6 +53,18 @@ def test_transaction_descriptions(cache):
     assert next(generator) == "Перевод организации"
 
 
+def test_transaction_descriptions_exceptions():
+    with pytest.raises(StopIteration):
+        next(transaction_descriptions([]))
+
+
+def test_transaction_descriptions_wrong_type():
+    with pytest.raises(TypeError):
+        next(transaction_descriptions(1))
+    with pytest.raises(TypeError):
+        next(transaction_descriptions("some_string"))
+
+
 def test_card_number_generator(start=1, end=5):
     generator = card_number_generator(start, end)
     assert next(generator) == "0000 0000 0000 0001"

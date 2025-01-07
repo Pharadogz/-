@@ -33,3 +33,12 @@ def test_get_mask_account_with_spaces(numbers_20):
 
 def test_get_mask_account_int(numbers_20_int):
     assert get_mask_account(numbers_20_int) == "**1234"
+
+
+@pytest.mark.parametrize("x", [7000792289606361, 8000522289606361, 7000792289606361])
+def test_get_mask_card_number_parametrized(x):
+    card_number_str = str(x)
+    expected_masked = (
+        f"{card_number_str[:4]} {card_number_str[4:6]}** **** {card_number_str[-4:]}"
+    )
+    assert get_mask_card_number(card_number_str) == expected_masked

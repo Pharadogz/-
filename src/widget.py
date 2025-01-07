@@ -37,7 +37,8 @@ def mask_account_card(card_info: str) -> str:
 
 def get_date(core_date: str) -> str:
     """Принимает дату и время в формате
-     ISO 8601, возвращает дату в формате ДД.ММ.ГГГГ"""
+     ISO 8601, возвращает дату в формате ДД.ММ.ГГГГ
+     :rtype: object"""
     core_date_list = core_date.split("-")
     if (core_date_list[0].isdigit()
             and core_date_list[1].isdigit()
