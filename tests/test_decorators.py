@@ -10,7 +10,7 @@ def log(filename: Any = None):
     from functools import wraps
 
     def log(filename: Any = None):
-        """ Логирует вызов функции и ее результат в файл или в консоль """
+        """ логирует вызов функции и ее результат в файл или в консоль """
 
         def decorator(func: Callable):
             @wraps(func)

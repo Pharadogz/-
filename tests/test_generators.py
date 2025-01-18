@@ -38,7 +38,7 @@ def test_filter_by_currency(cache, cod_curr="USD"):
             "amount": "56883.54",
             "currency": {"name": "USD", "code": "USD"},
         },
-        "description": "Перевод с карты на карту",
+        "description": "перевод с карты на карту",
         "from": "Visa Classic 6831982476737658",
         "to": "Visa Platinum 8990922113665229",
     }
