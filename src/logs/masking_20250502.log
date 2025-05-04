@@ -1,0 +1,7 @@
+2025-05-02 20:37:43,207 - __main__ - INFO - Успешная маскировка карты: 1234 56** **** 3456
+2025-05-02 20:37:43,207 - __main__ - INFO - Успешная маскировка счета: **7890
+2025-05-02 20:37:43,207 - __main__ - ERROR - Ошибка маскировки карты: Некорректный номер карты
+Traceback (most recent call last):
+  File "C:\Users\AdenTsu\PycharmProjects\pythonProject1\src\masks.py", line 36, in get_mask_card
+    raise ValueError("Некорректный номер карты")
+ValueError: Некорректный номер карты

@@ -100,3 +100,7 @@ def card_number_generator(start: int, end: int):
 
 for card_number in card_number_generator(1, 9):
     print(card_number)
+
+
+def transactions_lib():
+    return None

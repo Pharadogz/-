@@ -46,7 +46,7 @@ def log(filename: Any = None):
 
 
 # Example usage
-@log(filename="mylog.txt")
+@log(filename="logs/mylog.txt")
 def my_function(x, y):
     return x + y
 
