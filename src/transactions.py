@@ -7,7 +7,7 @@ from src.generators import transactions
 
 
 def load_transactions_csv(file_path: str) -> List[Dict]:
-    """Чтение транзакций из CSV файлов"""
+    """Чтение транзакций из CSV файла"""
     try:
         df = pd.read_csv(file_path)
         return df.to_dict('records')
