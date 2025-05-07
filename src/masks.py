@@ -30,10 +30,10 @@ def get_mask_card(card_number: str) -> str:
     """Функция маскировки номера карты"""
     try:
         card_number = str(card_number).replace(" ", "")
-        if not card_number.isdigit() or (12 >= len(card_number) or len(card_number) >= 20):
-            raise ValueError("Некорректный номер карты")
-        else:
+        if card_number.isdigit() and 12 < len(card_number) < 20:
             pass
+        else:
+            raise ValueError("Некорректный номер карты")
 
         masked = f"{card_number[:4]} {card_number[4:6]}** **** {card_number[-4:]}"
         logger.info(f"Успешная маскировка карты: {masked}")
