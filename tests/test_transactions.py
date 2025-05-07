@@ -20,7 +20,7 @@ def test_csv_loading():
     # Тестируем функцию правильно
     result = load_transactions_csv(csv_path)
 
-    # Проверяем результат
+    # Проверяем результаты
     assert len(result) == 2
     assert result[0]['amount'] == 100
     assert result[1]['category'] == 'transport'
