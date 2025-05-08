@@ -1,43 +1,48 @@
-from typing import Any, Callable
 from functools import wraps
 
 
-def log(filename: Any = None):
-    """ Логирует вызов функции и ее результат в файл или в консоль """
+def log(filename=None):
+    """Декоратор log автоматически логирует начало и конец выполнения функции"""
 
-    def decorator(func: Callable):
-        @wraps(func)
+    def decorator(function):
+        @wraps(function)
         def wrapper(*args, **kwargs):
+            # Подготовка сообщения для начала выполнения#
+            start_message = (
+                f"Starting {function.__name__} with arguments {args}, {kwargs}"
+            )
+            # Логируем начало, добавляя новые данные в конец файла
+            if filename:
+                with open(filename, "a") as file:
+                    file.write(start_message + "\n")
+            else:
+                print(start_message)
+
             try:
-                result = func(*args, **kwargs)
-                log_message = f"Function {func.__name__} called with args: {args}, kwargs: {kwargs}. Result: {result}\n"
+                # Вызов функции и получение результата
+                result = function(*args, **kwargs)
 
+                # Сообщение об успешном выполнении
+                message_success = f"{function.__name__} successful, result: {result}"
+                # Логируем успешное завершение
                 if filename:
-                    with open(filename, 'a') as f:
-                        f.write(log_message)
+                    with open(filename, "a") as file:
+                        file.write(message_success + "\n")
                 else:
-                    print(log_message, end='')
+                    print(message_success)
 
-                # Additional checks based on specific conditions
-                if result == sum(args):
-                    print("my_function ok")
                 return result
 
-            except ZeroDivisionError as e:
-                error_message = f"my_function error: {e}. Inputs: {args}, {kwargs}\n"
-                if filename:
-                    with open(filename, 'a') as f:
-                        f.write(error_message)
-                else:
-                    print(error_message, end='')
-                raise
             except Exception as e:
-                error_message = f"my_function error: {e}. Inputs: {args}, {kwargs}\n"
+                # Подготовка сообщения об ошибке
+                message_error = f"{function.__name__} error: {type(e).__name__}. Inputs: {args}, {kwargs}"
+                # Логируем ошибку
                 if filename:
-                    with open(filename, 'a') as f:
-                        f.write(error_message)
+                    with open(filename, "a") as file:
+                        file.write(message_error + "\n")
                 else:
-                    print(error_message, end='')
+                    print(message_error)
+
                 raise
 
         return wrapper
@@ -45,15 +50,17 @@ def log(filename: Any = None):
     return decorator
 
 
-# Example usage
-@log(filename="logs/mylog.txt")
+# Пример использования декоратора
+@log(filename="mylog.txt")
 def my_function(x, y):
     return x + y
 
 
-try:
-    my_function(2, 0)
-except Exception as e:
-    print(f"Caught an exception: {e}")
+# Успешное выполнение
+my_function(1, 2)
 
-print(my_function(2, 8))
+
+# Ошибка при запуске функции
+@log()
+def error_function(x):
+    return 1 / x

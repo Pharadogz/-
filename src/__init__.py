@@ -1,4 +1,3 @@
-
 def transactions_csv():
     return None
 
@@ -9,3 +8,8 @@ def transactions_excel():
 
 def load_transactions():
     return None
+
+
+def counter_transactions():
+    return None
+

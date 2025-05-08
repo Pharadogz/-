@@ -1,27 +1,18 @@
-from datetime import datetime
+def filter_by_state(list_dict: list, state: str = "EXECUTED") -> list:
+    """Принимает список словарей и значение ключа state (по умолчанию 'EXECUTED').
+    Функция возвращает новый список словарей, содержащий словари соответствующих ключу
+    """
+    new_list = []
+    for each_dict in list_dict:
+        if each_dict["state"] == state:
+            new_list.append(each_dict)
+    return new_list
 
 
-def filter_by_state(dict_list: list, state_value: str = "EXECUTED") -> list:
-    """Принимает список словарей и опционально значение для ключа
-     state. Возвращает новый список словарей, содержащий
- только те, у которых ключ state
-  соответствует указанному значению (по умолчанию 'EXECUTED')"""
-    returned_list = []
-    for dict_ in dict_list:
-        if dict_["state"] == state_value:
-            returned_list.append(dict_)
-    return returned_list
-
-
-def sort_by_date(dict_list: list,
-                 sort_by_date_descending: bool = True) -> list:
-    """Принимает список словарей. Возвращает новый список,
-     отсортированный по дате от новых к старым. Если надо
- изменить порядок сортировки,
-  то при вызове функции вторым параметром передай False"""
-    sorted_list = sorted(
-        dict_list, reverse=sort_by_date_descending,
-        key=lambda striated:
-        datetime.fromisoformat(striated["date"])
+def sort_by_date(list_dict: list, sort_arg: bool = True) -> list:
+    """Принимает список словарей и параметр сортировки(по умолчанию "True" — 'CANCELED').
+    Функция возвращает новый список, отсортированный по дате"""
+    sort_list = sorted(
+        list_dict, key=lambda each_dict: each_dict["date"], reverse=sort_arg
     )
-    return sorted_list
+    return sort_list

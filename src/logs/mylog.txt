@@ -2,3 +2,5 @@ Function my_function called with args: (2, 0), kwargs: {}. Result: 2
 Function my_function called with args: (2, 8), kwargs: {}. Result: 10
 Function my_function called with args: (2, 0), kwargs: {}. Result: 2
 Function my_function called with args: (2, 8), kwargs: {}. Result: 10
+Function my_function called with args: (2, 0), kwargs: {}. Result: 2
+Function my_function called with args: (2, 8), kwargs: {}. Result: 10

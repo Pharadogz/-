@@ -1,89 +1,62 @@
+import json
 import logging
-from pathlib import Path
-from unittest.mock import patch, MagicMock
+import os
 
-import pytest
+# Настройка логирования
+logger = logging.getLogger("utils")
+logger.setLevel(logging.DEBUG)  # Уровень не ниже DEBUG
 
-from src.external_api import convert_amount
+# Настройка обработчика для записи логов в файл
+file_handler = logging.FileHandler("logs/utils.log", mode="w", encoding="utf-8")
+file_handler.setLevel(logging.DEBUG)
 
+# Настройка формата записей в логе
+file_formatter = logging.Formatter(
+    "%(asctime)s - %(name)s - %(levelname)s - %(message)s"
+)
+file_handler.setFormatter(file_formatter)
 
-# Настройка логирования для тестов
-def setup_test_logging() -> object:
-    """Настройка системы логирования для тестов"""
-    logs_dir = Path("logs")
-    logs_dir.mkdir(exist_ok=True)
-
-    log_file = logs_dir / "test_external_api.log"
-
-    logging.basicConfig(
-        level=logging.DEBUG,
-        format='%(asctime)s - %(name)s - %(levelname)s - %(message)s',
-        handlers=[
-            logging.FileHandler(log_file, mode='w'),  # Перезаписываем файл при каждом запуске
-            logging.StreamHandler()
-        ]
-    )
-    return logging.getLogger(__name__)
+# Добавление обработчика к логгеру
+logger.addHandler(file_handler)
 
 
-logger = setup_test_logging()
+def read_json_transactions(file_path: str) -> list:
+    """Читает JSON-файл и возвращает список словарей с данными о финансовых транзакциях.
 
-@patch('requests.request')
-def test_convert_amount(mock_request):
-    """Тестирование функции конвертации суммы транзакции"""
+    :param file_path: str, путь к JSON-файлу
+    :return: list, список словарей с финансовыми транзакциями или пустой список
+    """
+    logger.debug(f"Проверка существования файла: {file_path}")
+
+    if not os.path.isfile(file_path):
+        logger.warning(f"Файл отсутствует: {file_path}")
+        return []
+
     try:
-        logger.info("Начало теста test_convert_amount")
+        logger.debug(f"Открытие файла: {file_path}")
+        with open(file_path, "r") as f:
+            data = json.load(f)
+            logger.debug("Чтение данных из файла прошло успешно.")
 
-        # Тестовые данные
-        transaction_test = {
-            "id": 441945886,
-            "state": "EXECUTED",
-            "date": "2019-08-26T10:50:58.294041",
-            "operationAmount": {
-                "amount": 200.00,
-                "currency": {
-                    "name": "руб.",
-                    "code": "USD"  # Меняем на USD для теста конвертации
-                }
-            },
-            "description": "Перевод организации",
-            "from": "Maestro 1596837868705199",
-            "to": "Счет 64686473678894779589"
-        }
-
-        logger.debug(f"Тестовые данные: {transaction_test}")
-
-        # 1. Настраиваем мок
-        mock_response = MagicMock()
-        mock_response.json.return_value = {"result": 15000.00}  # Пример курса 1 USD = 75 RUB
-        mock_request.return_value = mock_response
-        logger.debug("Mock для requests.request успешно настроен")
-
-        # 2. Вызываем функцию
-        result = convert_amount(transaction_test)
-        logger.info(f"Результат конвертации: {result}")
-
-        # 3. Проверяем, что запрос был отправлен с правильными параметрами
-        expected_url = (
-            "https://api.apilayer.com/exchangerates_data/convert"
-            f"?to=RUB&from=USD&amount=200.00"
-        )
-        mock_request.assert_called_once_with(
-            "GET",
-            expected_url,
-            headers={"apikey": "ваш_api_ключ"},
-            timeout=10
-        )
-        logger.debug("Проверка параметров запроса прошла успешно")
-
-        # 4. Проверяем результат конвертации
-        assert result == 15000.00
-        logger.info("Тест test_convert_amount завершен успешно")
-
+            # Проверка, содержит ли данные список
+            if isinstance(data, list):
+                logger.info(f"Успешное чтение данных из файла: {file_path}")
+                return data
+            else:
+                logger.warning(f"Данные в файле {file_path} не являются списком")
+                return []
+    except json.JSONDecodeError as e:
+        logger.error(f"Ошибка декодирования JSON в файле {file_path}: {e}")
+        return []
     except Exception as e:
-        logger.error(f"Ошибка в тесте test_convert_amount: {str(e)}", exc_info=True)
-        raise
+        logger.error(f"При чтении файла произошла ошибка {file_path}: {e}")
+        return []
 
 
 if __name__ == "__main__":
-    pytest.main(["-v"])
+    json_file_path = "path/to/your/transactions.json"
+    transactions = read_json_transactions(json_file_path)
+    if transactions:
+        print("Транзакции успешно загружены.")
+    else:
+        print("Не удалось загрузить транзакции.")

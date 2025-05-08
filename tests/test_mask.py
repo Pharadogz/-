@@ -1,44 +1,41 @@
-import pytest
-
 from src.masks import get_mask_account, get_mask_card_number
 
 
-def test_get_mask_card_numbers(numbers_16):
-    assert get_mask_card_number(numbers_16) == "7000 79** **** 6361"
+# Тесты для маскировки номера карты
+def test_standard_case(card_numbers):
+    """Проверяем простой случай с 16-значным номером карты"""
+    assert get_mask_card_number(card_numbers["standard"]) == "7000 79** **** 6361"
 
 
-def test_get_mask_card_numbers_with_spaces(numbers_16):
-    assert get_mask_card_number(numbers_16) == "7000 79** **** 6361"
+def test_short_card_number(card_numbers):
+    """Проверяем, как функция обработает короткий номер карты (то есть менее 6 цифр)"""
+    assert get_mask_card_number(card_numbers["short"]) == "7000"
 
 
-def test_get_mask_card_number_int(numbers_16_int):
-    assert get_mask_card_number(numbers_16_int) == "7000 79** **** 6361"
+def test_edge_case(card_numbers):
+    """Проверяем, как функция обрабатывает номер карты ровно из 6 цифр"""
+    assert get_mask_card_number(card_numbers["edge"]) == "7869 00"
 
 
-def test_get_mask_card_number_maxnumber(numbers_19):
-    assert get_mask_card_number(numbers_19) == "7000 79** **** 1123"
+def test_empty_string(card_numbers):
+    """Проверяем, как функция обрабатывает пустую строку"""
+    assert get_mask_card_number(card_numbers["empty"]) == ""
 
 
-def test_get_mask_card_number_minnumber(numbers_13):
-    assert get_mask_card_number(numbers_13) == "7000 79** **** 9606"
+def test_various_lengths(card_numbers):
+    assert get_mask_card_number(card_numbers["various"]) == "1234 56** 9012"
 
 
-def test_get_mask_account(numbers_20):
-    assert get_mask_account(numbers_20) == "**1234"
+# Тесты для маскировки номера счета
+def test_get_mask_account(account_numbers):
+    """Проверяем обычный номер счета"""
+    assert get_mask_account(account_numbers["standard"]) == "**9012"
 
 
-def test_get_mask_account_with_spaces(numbers_20):
-    assert get_mask_account(numbers_20) == "**1234"
+def test_less_than_four_symbol_mask_account(account_numbers):
+    for number in account_numbers["less_than_four"]:
+        assert get_mask_account(number) == number
 
 
-def test_get_mask_account_int(numbers_20_int):
-    assert get_mask_account(numbers_20_int) == "**1234"
-
-
-@pytest.mark.parametrize("x", [7000792289606361, 8000522289606361, 7000792289606361])
-def test_get_mask_card_number_parametrized(x):
-    card_number_str = str(x)
-    expected_masked = (
-        f"{card_number_str[:4]} {card_number_str[4:6]}** **** {card_number_str[-4:]}"
-    )
-    assert get_mask_card_number(card_number_str) == expected_masked
+def test_empty_string_mask_account(account_numbers):
+    assert get_mask_account(account_numbers["empty"]) == ""

@@ -68,3 +68,5 @@ if __name__ == "__main__":
         print(get_mask_card("123"))  # Вызовет исключение и запишет в лог
     except Exception:
         pass  # Ошибки уже логируются
+
+
